@@ -25,7 +25,7 @@ public class MoviesApiTest {
         moviesStore = new ru.practicum.moviehub.store.MoviesStore();
         server = new MoviesServer(moviesStore, 8080);
         server.start();
-        
+
         client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(2))
                 .build();
@@ -51,13 +51,13 @@ public class MoviesApiTest {
                 .build();
 
         HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        
+
         assertEquals(200, resp.statusCode(), "GET /movies должен вернуть 200");
-        
+
         String contentTypeHeaderValue = resp.headers().firstValue("Content-Type").orElse("");
-        assertEquals("application/json; charset=UTF-8", contentTypeHeaderValue, 
+        assertEquals("application/json; charset=UTF-8", contentTypeHeaderValue,
                 "Content-Type должен содержать формат данных и кодировку");
-                
+
         String body = resp.body().trim();
         assertTrue(body.startsWith("[") && body.endsWith("]"),
                 "Ожидается JSON-массив");
