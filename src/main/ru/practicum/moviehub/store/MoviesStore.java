@@ -1,42 +1,33 @@
-package ru.practicum.moviehub.store;
+package ru.practicum.moviehub.http;
 
-import ru.practicum.moviehub.model.Movie;
+import com.sun.net.httpserver.HttpServer;
+import ru.practicum.moviehub.store.MoviesStore;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
-public class MoviesStore {
-    private final List<Movie> movies = new ArrayList<>();
-    private final AtomicInteger idCounter = new AtomicInteger(1);
+public class MoviesServer {
+    private final HttpServer server;
+    private final int port;
 
-    public List<Movie> getAllMovies() {
-        return new ArrayList<>(movies); // Возвращаем копию для безопасности
+    public MoviesServer(MoviesStore moviesStore, int port) {
+        this.port = port;
+        try {
+            this.server = HttpServer.create(new InetSocketAddress(port), 0);
+            // Используем MoviesHandler который теперь существует
+            this.server.createContext("/movies", new MoviesHandler(moviesStore));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create HTTP server on port " + port, e);
+        }
     }
 
-    public Movie addMovie(Movie movie) {
-        movie.setId(idCounter.getAndIncrement());
-        movies.add(movie);
-        return movie;
+    public void start() {
+        server.start();
+        System.out.println("MovieHub server started on http://localhost:" + port);
     }
 
-    public Movie getMovieById(int id) {
-        return movies.stream()
-                .filter(m -> m.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
-
-    public boolean deleteMovie(int id) {
-        return movies.removeIf(m -> m.getId() == id);
-    }
-
-    public void clear() {
-        movies.clear();
-        idCounter.set(1);
-    }
-
-    public int size() {
-        return movies.size();
+    public void stop() {
+        server.stop(0);
+        System.out.println("MovieHub server stopped");
     }
 }
