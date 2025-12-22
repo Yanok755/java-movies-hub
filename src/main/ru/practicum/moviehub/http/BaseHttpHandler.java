@@ -18,10 +18,10 @@ public abstract class BaseHttpHandler implements HttpHandler {
     protected void sendJson(HttpExchange exchange, int statusCode, Object response) throws IOException {
         String jsonResponse = gson.toJson(response);
         byte[] bytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
-        
+
         exchange.getResponseHeaders().set("Content-Type", CT_JSON);
         exchange.sendResponseHeaders(statusCode, bytes.length);
-        
+
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
         }
@@ -36,13 +36,9 @@ public abstract class BaseHttpHandler implements HttpHandler {
         byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=UTF-8");
         exchange.sendResponseHeaders(statusCode, bytes.length);
-        
+
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
         }
-    }
-
-    protected String readRequestBody(HttpExchange exchange) throws IOException {
-        return new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
     }
 }
