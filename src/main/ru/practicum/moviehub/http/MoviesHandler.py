@@ -46,7 +46,7 @@ public class MoviesHandler extends BaseHttpHandler {
                 handleAddMovie(exchange);
                 break;
             default:
-                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.sendResponseHeaders(405, -1);
         }
     }
 
@@ -68,7 +68,7 @@ public class MoviesHandler extends BaseHttpHandler {
                     handleDeleteMovie(exchange, id);
                     break;
                 default:
-                    exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                    exchange.sendResponseHeaders(405, -1);
             }
         } catch (NumberFormatException e) {
             sendText(exchange, 400, "Invalid movie ID");
@@ -85,7 +85,6 @@ public class MoviesHandler extends BaseHttpHandler {
             String body = readRequestBody(exchange);
             Movie movie = gson.fromJson(body, Movie.class);
 
-            // Валидация
             if (movie == null || movie.getTitle() == null || movie.getTitle().trim().isEmpty()) {
                 sendText(exchange, 400, "Invalid movie data: title is required");
                 return;
@@ -122,7 +121,6 @@ public class MoviesHandler extends BaseHttpHandler {
         }
     }
 
-    // Метод для чтения тела запроса
     private String readRequestBody(HttpExchange exchange) throws IOException {
         return new String(exchange.getRequestBody().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
     }
