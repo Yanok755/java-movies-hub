@@ -98,7 +98,7 @@ public class MoviesApiTest {
         assertEquals("[]", body, "Тело ответа должно быть пустым массивом");
 
         // Альтернативная проверка с использованием TypeToken
-        TypeToken<List<Movie>> typeToken = new TypeToken<>() {};
+        TypeToken<List<Movie>> typeToken = new TypeToken<List<Movie>>() {};
         List<Movie> movies = gson.fromJson(body, typeToken.getType());
         assertTrue(movies.isEmpty(), "Список фильмов должен быть пустым");
     }
@@ -362,7 +362,7 @@ public class MoviesApiTest {
         assertEquals(200, response.statusCode());
 
         // Используем TypeToken для десериализации
-        TypeToken<List<Movie>> typeToken = new TypeToken<>() {};
+        TypeToken<List<Movie>> typeToken = new TypeToken<List<Movie>>() {};
         List<Movie> movieList = gson.fromJson(response.body(), typeToken.getType());
 
         assertEquals(3, movieList.size(), "Массив должен содержать 3 фильма");
@@ -430,7 +430,7 @@ public class MoviesApiTest {
         HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
 
         // Assert
-        TypeToken<List<Movie>> typeToken = new TypeToken<>() {};
+        TypeToken<List<Movie>> typeToken = new TypeToken<List<Movie>>() {};
         List<Movie> movieList = gson.fromJson(response.body(), typeToken.getType());
 
         for (int i = 0; i < moviesData.length; i++) {
@@ -555,7 +555,7 @@ public class MoviesApiTest {
                     .header("Content-Type", "application/json")
                     .build();
 
-            HttpResponse<String> postResponse = httpClient.send(postRequest,
+            HttpResponse<String> postResponse = httpClient.send(postRequest, 
                 HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
             assertEquals(201, postResponse.statusCode(), "Добавление фильма " + (i + 1) + " должно вернуть 201");
         }
@@ -566,11 +566,11 @@ public class MoviesApiTest {
                 .GET()
                 .build();
 
-        HttpResponse<String> getResponse = httpClient.send(getRequest,
+        HttpResponse<String> getResponse = httpClient.send(getRequest, 
             HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
         assertEquals(200, getResponse.statusCode());
 
-        TypeToken<List<Movie>> typeToken = new TypeToken<>() {};
+        TypeToken<List<Movie>> typeToken = new TypeToken<List<Movie>>() {};
         List<Movie> movies = gson.fromJson(getResponse.body(), typeToken.getType());
         assertEquals(3, movies.size(), "Должно быть 3 фильма в хранилище");
     }
@@ -580,7 +580,7 @@ public class MoviesApiTest {
     @DisplayName("Проверка изоляции тестов: каждый тест начинается с чистого хранилища")
     void testIsolation_checkEmptyStoreAfterPreviousTests() {
         // Этот тест должен выполняться последним, чтобы проверить, что @BeforeEach работает правильно
-        assertEquals(0, moviesStore.getMovieCount(),
+        assertEquals(0, moviesStore.getMovieCount(), 
                 "Хранилище должно быть пустым в начале каждого теста");
     }
 }
