@@ -15,12 +15,22 @@ public class MoviesHandler extends BaseHttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
-        
+
         if ("GET".equalsIgnoreCase(method)) {
-            // Возвращаем пустой JSON массив
-            sendJson(exchange, 200, new String[]{}); // Пустой массив
+            handleGet(exchange);
+        } else if ("POST".equalsIgnoreCase(method)) {
+            handlePost(exchange);
         } else {
             exchange.sendResponseHeaders(405, -1); // Method Not Allowed
         }
+    }
+
+    private void handleGet(HttpExchange exchange) throws IOException {
+        sendJson(exchange, 200, moviesStore.getAllMovies());
+    }
+
+    private void handlePost(HttpExchange exchange) throws IOException {
+        // TODO: Реализовать в следующих этапах
+        exchange.sendResponseHeaders(501, -1); // Not Implemented
     }
 }
