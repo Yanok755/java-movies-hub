@@ -16,10 +16,10 @@ public abstract class BaseHttpHandler implements HttpHandler {
     protected void sendJson(HttpExchange exchange, int statusCode, Object response) throws IOException {
         String jsonResponse = gson.toJson(response);
         byte[] bytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
-        
+ 
         exchange.getResponseHeaders().set("Content-Type", CT_JSON);
         exchange.sendResponseHeaders(statusCode, bytes.length);
-        
+
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
         }
