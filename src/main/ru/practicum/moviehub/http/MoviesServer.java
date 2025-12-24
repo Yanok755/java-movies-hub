@@ -8,11 +8,17 @@ import java.net.InetSocketAddress;
 
 public class MoviesServer {
     private final HttpServer server;
+    private final int port;
 
     public MoviesServer(MoviesStore moviesStore, int port) {
+        this.port = port;
         try {
             this.server = HttpServer.create(new InetSocketAddress(port), 0);
+            // Регистрируем обработчик для эндпоинта /movies
             this.server.createContext("/movies", new MoviesHandler(moviesStore));
+
+            // Устанавливаем executor (null для использования дефолтного)
+            this.server.setExecutor(null);
         } catch (IOException e) {
             throw new RuntimeException("Failed to create HTTP server on port " + port, e);
         }
@@ -20,11 +26,16 @@ public class MoviesServer {
 
     public void start() {
         server.start();
-        System.out.println("MovieHub server started on http://localhost:" + server.getAddress().getPort());
+        System.out.println("MovieHub server started on http://localhost:" + port);
+        System.out.println("Available endpoint: GET, POST /movies");
     }
 
     public void stop() {
         server.stop(0);
         System.out.println("MovieHub server stopped");
+    }
+
+    public int getPort() {
+        return port;
     }
 }
