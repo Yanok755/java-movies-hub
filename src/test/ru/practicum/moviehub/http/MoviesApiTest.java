@@ -333,8 +333,7 @@ public class MoviesApiTest {
         String[][] moviesData = {
             {"The Shawshank Redemption", "1994", "142"},
             {"The Godfather", "1972", "175"},
-            {"The Dark Knight", "2008", "152"}
-        };
+            {"The Dark Knight", "2008", "152"}};
 
         for (String[] movieData : moviesData) {
             String movieJson = String.format(
@@ -404,8 +403,7 @@ public class MoviesApiTest {
         String[][] moviesData = {
             {"First Movie", "2001", "100"},
             {"Second Movie", "2002", "110"},
-            {"Third Movie", "2003", "120"}
-        };
+            {"Third Movie", "2003", "120"}};
 
         for (String[] movieData : moviesData) {
             String movieJson = String.format(
