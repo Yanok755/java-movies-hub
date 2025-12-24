@@ -555,7 +555,7 @@ public class MoviesApiTest {
                     .header("Content-Type", "application/json")
                     .build();
 
-            HttpResponse<String> postResponse = httpClient.send(postRequest, 
+            HttpResponse<String> postResponse = httpClient.send(postRequest,
                 HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
             assertEquals(201, postResponse.statusCode(), "Добавление фильма " + (i + 1) + " должно вернуть 201");
         }
@@ -566,7 +566,7 @@ public class MoviesApiTest {
                 .GET()
                 .build();
 
-        HttpResponse<String> getResponse = httpClient.send(getRequest, 
+        HttpResponse<String> getResponse = httpClient.send(getRequest,
             HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
         assertEquals(200, getResponse.statusCode());
 
@@ -580,7 +580,7 @@ public class MoviesApiTest {
     @DisplayName("Проверка изоляции тестов: каждый тест начинается с чистого хранилища")
     void testIsolation_checkEmptyStoreAfterPreviousTests() {
         // Этот тест должен выполняться последним, чтобы проверить, что @BeforeEach работает правильно
-        assertEquals(0, moviesStore.getMovieCount(), 
+        assertEquals(0, moviesStore.getMovieCount(),
                 "Хранилище должно быть пустым в начале каждого теста");
     }
 }
