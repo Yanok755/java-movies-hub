@@ -15,12 +15,31 @@ public class Movie {
     }
 
     // Геттеры и сеттеры
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getTitle() { 
+        return title; 
+    }
 
-    public int getYear() { return year; }
-    public void setYear(int year) { this.year = year; }
+    public void setTitle(String title) { 
+        this.title = title; 
+    }
 
-    public int getDuration() { return duration; }
-    public void setDuration(int duration) { this.duration = duration; }
+    public int getYear() { 
+        return year; 
+    }
+
+    public void setYear(int year) { 
+        this.year = year; 
+    }
+
+    public int getDuration() { 
+        return duration; 
+    }
+
+    public void setDuration(int duration) { 
+        this.duration = duration; 
+    }
+    @Override
+    public String toString() {
+        return "Movie{title='" + title + "', year=" + year + ", duration=" + duration + "}";
+    }
 }
