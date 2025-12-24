@@ -1,9 +1,11 @@
-package ru.practicum.moviehub.http;
+package ru.practicum.moviehub;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.practicum.moviehub.http.MoviesServer;
+import ru.practicum.moviehub.store.MoviesStore;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,17 +14,18 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MoviesApiTest {
     private static final String BASE = "http://localhost:8080";
     private static MoviesServer server;
     private static HttpClient client;
-    private static ru.practicum.moviehub.store.MoviesStore moviesStore;
+    private static MoviesStore moviesStore;
 
     @BeforeAll
     static void beforeAll() {
-        moviesStore = new ru.practicum.moviehub.store.MoviesStore();
+        moviesStore = new MoviesStore();
         server = new MoviesServer(moviesStore, 8080);
         server.start();
 
@@ -31,16 +34,16 @@ public class MoviesApiTest {
                 .build();
     }
 
-    @BeforeEach
-    void beforeEach() {
-        moviesStore.clear();
-    }
-
     @AfterAll
     static void afterAll() {
         if (server != null) {
             server.stop();
         }
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        moviesStore.clear(); // Очищаем хранилище перед каждым тестом
     }
 
     @Test
@@ -55,12 +58,12 @@ public class MoviesApiTest {
         assertEquals(200, resp.statusCode(), "GET /movies должен вернуть 200");
 
         String contentTypeHeaderValue = resp.headers().firstValue("Content-Type").orElse("");
-        assertEquals("application/json; charset=UTF-8", contentTypeHeaderValue,
+        assertEquals("application/json; charset=UTF-8", contentTypeHeaderValue, 
                 "Content-Type должен содержать формат данных и кодировку");
 
         String body = resp.body().trim();
         assertTrue(body.startsWith("[") && body.endsWith("]"),
                 "Ожидается JSON-массив");
-        assertEquals("[]", body, "При пустом хранилище должен вернуться пустой массив []");
+        assertEquals("[]", body, "При пустом хранилище должен возвращаться пустой массив");
     }
 }
