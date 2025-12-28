@@ -21,7 +21,7 @@ public class MoviesStore {
     }
 
     public boolean containsMovie(Movie newMovie) {
-        return movies.stream().anyMatch(movie -> 
+        return movies.stream().anyMatch(movie ->
             movie.getTitle().equals(newMovie.getTitle()) &&
             movie.getYear() == newMovie.getYear() &&
             movie.getDuration() == newMovie.getDuration()
