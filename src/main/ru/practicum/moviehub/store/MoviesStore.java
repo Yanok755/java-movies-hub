@@ -1,34 +1,44 @@
 package ru.practicum.moviehub.store;
 
 import ru.practicum.moviehub.model.Movie;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MoviesStore {
-    private final List<Movie> movies = new CopyOnWriteArrayList<>();
+    private final Map<Integer, Movie> movies = new HashMap<>();
+    private final AtomicInteger nextId = new AtomicInteger(1);
 
-    public List<Movie> getAllMovies() {
-        return new ArrayList<>(movies); // Возвращаем копию для безопасности
+    public List<Movie> getAllMovie() {
+        return new ArrayList<>(movies.values());
     }
 
-    public void addMovie(Movie movie) {
-        movies.add(movie);
+    public Movie getMovieById(int id) {
+        return movies.get(id);
+    }
+
+    public Movie addMovie(Movie movie) {
+        int id = nextId.getAndIncrement();
+        Movie newMovie = new Movie(id, movie.getName(), movie.getDescription(), movie.getDuration());
+
+        movies.put(id, newMovie);
+
+        return newMovie;
+    }
+
+    public boolean deleteMovie(int id) {
+        return movies.remove(id) != null;
     }
 
     public void clear() {
         movies.clear();
+        nextId.set(1);
     }
 
-    public boolean containsMovie(Movie newMovie) {
-        return movies.stream().anyMatch(movie ->
-            movie.getTitle().equals(newMovie.getTitle()) &&
-            movie.getYear() == newMovie.getYear() &&
-            movie.getDuration() == newMovie.getDuration()
-        );
-    }
-
-    public int getMovieCount() {
+    public int size() {
         return movies.size();
     }
 }
