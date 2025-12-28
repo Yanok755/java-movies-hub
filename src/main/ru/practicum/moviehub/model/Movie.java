@@ -1,45 +1,66 @@
 package ru.practicum.moviehub.model;
 
 public class Movie {
-    private String title;
-    private int year;
+    private int id;
+    private String name;
+    private String description;
     private int duration;
 
-    // Конструктор по умолчанию (нужен для Gson)
-    public Movie() {}
+    public Movie() {
+    }
 
-    public Movie(String title, int year, int duration) {
-        this.title = title;
-        this.year = year;
+    public Movie(String name, String description, int duration) {
+        this.name = name;
+        this.description = description;
         this.duration = duration;
     }
 
-    // Геттеры и сеттеры
-    public String getTitle() { 
-        return title; 
+    public Movie(int id, String name, String description, int duration) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.duration = duration;
     }
 
-    public void setTitle(String title) { 
-        this.title = title; 
+    public int getId() {
+        return id;
     }
 
-    public int getYear() { 
-        return year; 
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setYear(int year) { 
-        this.year = year; 
+    public String getName() {
+        return name;
     }
 
-    public int getDuration() { 
-        return duration; 
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setDuration(int duration) { 
-        this.duration = duration; 
+    public String getDescription() {
+        return description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     @Override
     public String toString() {
-        return "Movie{title='" + title + "', year=" + year + ", duration=" + duration + "}";
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", duration=" + duration +
+                '}';
     }
 }
