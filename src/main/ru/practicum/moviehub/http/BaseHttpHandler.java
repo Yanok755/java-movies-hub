@@ -13,6 +13,10 @@ public abstract class BaseHttpHandler implements HttpHandler {
     protected static final String CT_JSON = "application/json; charset=UTF-8";
     protected final Gson gson;
 
+    protected BaseHttpHandler() {
+        this.gson = new Gson();
+    }
+
     public BaseHttpHandler(Gson gson) {
         if (gson == null) {
             throw new IllegalArgumentException("Gson не может быть null");
