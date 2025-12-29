@@ -9,9 +9,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-abstract class BaseHttpHandler implements HttpHandler {
-    protected static final String CT_JSON = "application/json; charset=UTF-8"; // !!! Укажите содержимое заголовка Content-Type
-    protected static final Gson gson = new Gson();
+public abstract class BaseHttpHandler implements HttpHandler {
+    protected static final String CT_JSON = "application/json; charset=UTF-8";
+    protected final Gson gson;
+
+    public BaseHttpHandler(Gson gson) {
+        if (gson == null) {
+            throw new IllegalArgumentException("Gson не может быть null");
+        }
+        this.gson = gson;
+    }
 
     protected void sendJson(HttpExchange exchange, int statusCode, Object response) throws IOException {
         String json = gson.toJson(response);
