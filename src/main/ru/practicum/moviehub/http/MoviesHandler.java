@@ -15,11 +15,15 @@ import java.util.List;
 
 public class MoviesHandler extends BaseHttpHandler {
     private final MoviesStore moviesStore;
-    private final Gson gson;
 
     public MoviesHandler(MoviesStore moviesStore) {
+        super();
         this.moviesStore = moviesStore;
-        this.gson = new Gson();
+    }
+
+    public MoviesHandler(MoviesStore moviesStore, Gson gson) {
+        super(gson);
+        this.moviesStore = moviesStore;
     }
 
     @Override
@@ -37,7 +41,6 @@ public class MoviesHandler extends BaseHttpHandler {
                     } else {
                         sendError(exchange, 404, "Неверный путь");
                     }
-
                     break;
 
                 case "POST":
@@ -46,7 +49,6 @@ public class MoviesHandler extends BaseHttpHandler {
                     } else {
                         sendError(exchange, 404, "Неверный путь");
                     }
-
                     break;
 
                 case "DELETE":
@@ -55,7 +57,6 @@ public class MoviesHandler extends BaseHttpHandler {
                     } else {
                         sendError(exchange, 404, "Неверный путь");
                     }
-
                     break;
 
                 default:
@@ -106,7 +107,7 @@ public class MoviesHandler extends BaseHttpHandler {
 
         try {
             String requestBody = readRequestBody(exchange);
-            Movie movie = gson.fromJson(requestBody, Movie.class);
+            Movie movie = parseJson(requestBody, Movie.class);
 
             if (movie.getName() == null || movie.getName().trim().isEmpty()) {
                 sendError(exchange, 400, "Название фильма обязательно");
